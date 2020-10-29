@@ -17,40 +17,40 @@
 
 ---
 >- *Usage*
-```
-import asyncio
-from FastIO import CopyDir
-async def main():
-    await CopyDir(r"C:\\", r"D\\backup")
-asyncio.run(main())
-```
+>```
+>import asyncio
+>from FastIO import CopyDir
+>async def main():
+>    await CopyDir(r"C:\\", r"D\\backup")
+>asyncio.run(main())
+>```
 
 ---
 ### API
 >- FastIO.walk(...): An AsyncGenerator os.walk like Implementation 
-```
-from FastIO import walk
-async def main():
-    async for basedir, dirs, filenames in walk(r"C:\\"):
-        print(basedir, dirs, filenames)
-asyncio.run(main())
-```
+>```
+>from FastIO import walk
+>async def main():
+>    async for basedir, dirs, filenames in walk(r"C:\\"):
+>        print(basedir, dirs, filenames)
+>asyncio.run(main())
+>```
 
 >- FastIO.CopyFile(...): An Asynchronouse shutil.CopyFile Implementation
-```
-from FastIO import CopyFile
-async def main():
-    await CopyFile(r"C:\Windows\System32\kernel32.dll", r"D:\backup\kernel32.dll.backup")    
-asyncio.run(main())
-```
+>```
+>from FastIO import CopyFile
+>async def main():
+>    await CopyFile(r"C:\Windows\System32\kernel32.dll", r"D:\backup\kernel32.dll.backup")    
+>asyncio.run(main())
+>```
 
 >- FastIO.CopyDir(...): An Asynchronouse shutil.copytree Implementation
-```
-from FastIO import CopyDir
-async def main():
-    await CopyDir(r"C:\\", r"D:\backup\C")    
-asyncio.run(main())
-```
+>```
+>from FastIO import CopyDir
+>async def main():
+>    await CopyDir(r"C:\\", r"D:\backup\C")    
+>asyncio.run(main())
+>```
 
 ---
 ### Performance
