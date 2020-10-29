@@ -22,6 +22,7 @@
 >from FastIO import CopyDir
 >async def main():
 >    await CopyDir(r"C:\\", r"D\\backup")
+>
 >asyncio.run(main())
 >```
 
@@ -34,6 +35,7 @@
 >async def main():
 >    async for basedir, dirs, filenames in walk(r"C:\\"):
 >        print(basedir, dirs, filenames)
+>
 >asyncio.run(main())
 >```
 
@@ -42,7 +44,8 @@
 >import asyncio
 >from FastIO import CopyFile
 >async def main():
->    await CopyFile(r"C:\Windows\System32\kernel32.dll", r"D:\backup\kernel32.dll.backup")    
+>    await CopyFile(r"C:\Windows\System32\kernel32.dll", r"D:\backup\kernel32.dll.backup")  
+>  
 >asyncio.run(main())
 >```
 
@@ -51,12 +54,13 @@
 >import asyncio
 >from FastIO import CopyDir
 >async def main():
->    await CopyDir(r"C:\\", r"D:\backup\C")    
+>    await CopyDir(r"C:\\", r"D:\backup\C") 
+>   
 >asyncio.run(main())
 >```
 
 ---
-### Performance
+### CopyDir Performance
 | Number Of Files | Avg File Size | Total File Sizes | Total Time  |
 |-----------------|---------------|------------------|-------------|
 | 250             | 3.8MB         | 900 MB           | 10 Seconds  |

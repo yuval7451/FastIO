@@ -8,6 +8,7 @@ import asyncio
 import aiofiles
 import concurrent.futures
 from functools import partial
+from contextlib import suppress
 from asyncio.events import AbstractEventLoop
 from typing import AsyncGenerator, Iterator, List, Optional, Tuple
 from common import LOGGING_FORMAT, MAX_WORKERS, READ_BYTES, WRITE_BYTES, BUFFER_SIZE
@@ -41,7 +42,7 @@ async def walk(top: str) -> AsyncGenerator[Tuple[str, List[str], List[str]], Non
     dirs: List[str] = []
     files: List[str] = []
 
-    try:
+    with suppress(IOError):
         scandir_it: Iterator = os.scandir(top)
         with scandir_it:
             for entry in scandir_it:
@@ -62,8 +63,6 @@ async def walk(top: str) -> AsyncGenerator[Tuple[str, List[str], List[str]], Non
             if not os.path.islink(new_top):
                 async for (_top, _dirs, _filenames) in walk(new_top):
                     yield _top, _dirs, _filenames
-    except:
-        Logger.error("An Error occurred", exc_info=True)
 
 async def CopyDir(src: str, dst: str, max_workers: Optional[int]=MAX_WORKERS, loop: Optional[AbstractEventLoop]=None) -> None:
     """
