@@ -4,9 +4,7 @@
 import asyncio
 from FastIO import CopyDir
 
-
 async def main():
     await CopyDir(r"C:\\", r"D\\backup")
 
-if __name__ == "__main__":
-    asyncio.run(main())
+asyncio.run(main())

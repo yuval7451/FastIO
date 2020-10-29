@@ -41,26 +41,29 @@ async def walk(top: str) -> AsyncGenerator[Tuple[str, List[str], List[str]], Non
     dirs: List[str] = []
     files: List[str] = []
 
-    scandir_it: Iterator = os.scandir(top)
-    with scandir_it:
-        for entry in scandir_it:
-            if entry.is_dir():
-                Logger.debug(f"Found Directory {entry.name}")
-                dirs.append(entry.name)
-            else:
-                Logger.debug(f"Found File {entry.name}")
-                files.append(entry.name)
+    try:
+        scandir_it: Iterator = os.scandir(top)
+        with scandir_it:
+            for entry in scandir_it:
+                if entry.is_dir():
+                    Logger.debug(f"Found Directory {entry.name}")
+                    dirs.append(entry.name)
+                else:
+                    Logger.debug(f"Found File {entry.name}")
+                    files.append(entry.name)
 
-    # Yield before recursions.
-    yield top, dirs, files
+        # Yield before recursions.
+        yield top, dirs, files
 
-    # Recurse into sub-directories.
-    Logger.debug("Starting to Recurse into sub-directories")
-    for dirname in dirs:
-        new_top = os.path.join(top, dirname)
-        if not os.path.islink(new_top):
-            async for (_top, _dirs, _filenames) in walk(new_top):
-                yield _top, _dirs, _filenames
+        # Recurse into sub-directories.
+        Logger.debug("Starting to Recurse into sub-directories")
+        for dirname in dirs:
+            new_top = os.path.join(top, dirname)
+            if not os.path.islink(new_top):
+                async for (_top, _dirs, _filenames) in walk(new_top):
+                    yield _top, _dirs, _filenames
+    except:
+        Logger.error("An Error occurred", exc_info=True)
 
 async def CopyDir(src: str, dst: str, max_workers: Optional[int]=MAX_WORKERS, loop: Optional[AbstractEventLoop]=None) -> None:
     """

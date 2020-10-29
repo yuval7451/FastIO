@@ -29,6 +29,7 @@
 ### API
 >- FastIO.walk(...): An AsyncGenerator os.walk like Implementation 
 >```
+>import asyncio
 >from FastIO import walk
 >async def main():
 >    async for basedir, dirs, filenames in walk(r"C:\\"):
@@ -38,6 +39,7 @@
 
 >- FastIO.CopyFile(...): An Asynchronouse shutil.CopyFile Implementation
 >```
+>import asyncio
 >from FastIO import CopyFile
 >async def main():
 >    await CopyFile(r"C:\Windows\System32\kernel32.dll", r"D:\backup\kernel32.dll.backup")    
@@ -46,6 +48,7 @@
 
 >- FastIO.CopyDir(...): An Asynchronouse shutil.copytree Implementation
 >```
+>import asyncio
 >from FastIO import CopyDir
 >async def main():
 >    await CopyDir(r"C:\\", r"D:\backup\C")    
