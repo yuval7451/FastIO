@@ -9,11 +9,11 @@
 ### Getting Started
 
 >- *Installation* 
-```
-git clone https://github.com/yuval7451/FastIO.git
-cd FastIO
-pip install -r requirements.txt
-```
+>```
+>git clone https://github.com/yuval7451/FastIO.git
+>cd FastIO
+>pip install -r requirements.txt
+>```
 
 ---
 >- *Usage*
