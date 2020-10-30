@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 .vscode
+performance/
+performance/*
+performance_test.py
 # C extensions
 *.so
 
