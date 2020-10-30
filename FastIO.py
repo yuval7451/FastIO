@@ -3,26 +3,21 @@
 
 ## Imports
 import os
+import tqdm
 import logging
 import asyncio
 import aiofiles
 import concurrent.futures
 from functools import partial
 from contextlib import suppress
+from utils import LoggingFactory
 from asyncio.events import AbstractEventLoop
 from typing import AsyncGenerator, Iterator, List, Optional, Tuple
-from common import LOGGING_FORMAT, MAX_WORKERS, READ_BYTES, WRITE_BYTES, BUFFER_SIZE
+from common import MAX_WORKERS, READ_BYTES, WRITE_BYTES, BUFFER_SIZE
 from aiofiles.threadpool.binary import AsyncBufferedReader, AsyncBufferedIOBase
 
 ## Logging
-LEVEL = logging.INFO
-Logger = logging.getLogger(__name__)
-Logger.setLevel(LEVEL)
-StreamHandler = logging.StreamHandler()
-StreamHandler.setLevel(LEVEL)
-formatter = logging.Formatter(LOGGING_FORMAT)
-StreamHandler.setFormatter(formatter)
-Logger.addHandler(StreamHandler)
+Logger = LoggingFactory(__name__, logging.INFO)
 
 ## Functions
 async def walk(top: str) -> AsyncGenerator[Tuple[str, List[str], List[str]], None]:
@@ -89,24 +84,25 @@ async def CopyDir(src: str, dst: str, max_workers: Optional[int]=MAX_WORKERS, lo
         # for Every File in the Current Directory,
         # Copy All The files Recursivly.
         async for (basedir, dirs, filenames) in walk(src):
-            futures = [
-                    loop.run_in_executor(
-                        executor,
-                        partial(
-                            _CopyFileWraper,
-                            src_file=os.path.join(basedir, filename),
-                            dst_file=os.path.join(dst, filename)
-                        )
-                    )
-                    for filename in filenames]
-                    
-            if max_workers < len(futures):
-                Logger.info(f"Runnning {max_workers} Coroutines concurrently Out of {len(futures)} Coroutines")
+            if max_workers < len(filenames):
+                Logger.info(f"Runnning {max_workers} Coroutines concurrently Out of {len(filenames)} Coroutines")
             else:
-                Logger.info(f"Runnning {len(futures)} Coroutines concurrently")
-            
-            await asyncio.gather(*futures)
-
+                Logger.info(f"Runnning {len(filenames)} Coroutines concurrently")
+            with tqdm.tqdm(total=len(filenames)) as pbar:
+                futures = [
+                        loop.run_in_executor(
+                            executor,
+                            partial(
+                                _CopyFileWraper,
+                                src_file=os.path.join(basedir, filename),
+                                dst_file=os.path.join(dst, filename),
+                                pbar=pbar
+                            )
+                        )
+                        for filename in filenames]
+                        
+                await asyncio.gather(*futures)
+                
 async def CopyFile(src_file: str, dst_file: str) -> None:
     """
     @param src_file: C{str} -> the source file path.
@@ -123,7 +119,7 @@ async def CopyFile(src_file: str, dst_file: str) -> None:
     async with aiofiles.open(src_file, mode=READ_BYTES) as fd_src:
         async with aiofiles.open(dst_file, mode=WRITE_BYTES) as fd_dst:
             await _CopyFileObj(fd_src, fd_dst)
-                         
+                        
 async def _CopyFileObj(src_fd: AsyncBufferedReader, dst_fd: AsyncBufferedIOBase) -> None:
     """
     @param src_fd: C{AsyncBufferedReader} -> A File Descriptor Like object.
@@ -140,10 +136,11 @@ async def _CopyFileObj(src_fd: AsyncBufferedReader, dst_fd: AsyncBufferedIOBase)
             break
         await dst_fd.write(buffer) # type: ignore
 
-def _CopyFileWraper(src_file: str, dst_file: str) -> None:
+def _CopyFileWraper(src_file: str, dst_file: str, pbar: tqdm.std.tqdm) -> None:
     """
     @param src_file: C{str} -> The source path of the file.
     @param dst_file: C{str} -> The destention path of the file.
+    @param pbar: C{tqdm.std.tqdm} -> The Progress bar of the event loop
     @remarks:
              * Run a coroutine in an Executor in a diffrent Thread asynchronously .
              ! Should not be used directly, Use FastIO.CopyDir(...) instead.
@@ -151,9 +148,10 @@ def _CopyFileWraper(src_file: str, dst_file: str) -> None:
     loop = asyncio.new_event_loop()
     try:
         asyncio.set_event_loop(loop)
-        file_parent = os.path.dirname(dst_file)
-        if not os.path.exists(file_parent):
-            os.makedirs(file_parent)
+        file_parent = os.path.dirname(dst_file)    
+        with suppress(FileExistsError):
+            if not os.path.exists(file_parent):
+                os.makedirs(file_parent)
         
         loop.run_until_complete(CopyFile(src_file, dst_file))
 
@@ -161,4 +159,5 @@ def _CopyFileWraper(src_file: str, dst_file: str) -> None:
         Logger.error("Error While Copying File", exc_info=True)
 
     finally:
+        pbar.update(1)
         loop.close()
