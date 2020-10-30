@@ -157,8 +157,8 @@ def _CopyFileWraper(src_file: str, dst_file: str) -> None:
         
         loop.run_until_complete(CopyFile(src_file, dst_file))
 
-    except Exception as e:
-        print(e)
+    except:
+        Logger.error("Error While Copying File", exc_info=True)
 
     finally:
         loop.close()

@@ -3,12 +3,12 @@
 
 ### What Is It?
 
->- *A Fully Asynchronouse shutil like API*
+>* *A Fully Asynchronouse shutil like API*
 ---
 
 ### Getting Started
 
->- *Installation* 
+>* *Installation* 
 >```
 >git clone https://github.com/yuval7451/FastIO.git
 >cd FastIO
@@ -16,7 +16,7 @@
 >```
 
 ---
->- *Usage*
+>* *Usage*
 >```
 >import asyncio
 >from FastIO import CopyDir
@@ -39,7 +39,7 @@
 >asyncio.run(main())
 >```
 
->- FastIO.CopyFile(...): An Asynchronouse shutil.CopyFile Implementation
+>* FastIO.CopyFile(...): An Asynchronouse shutil.CopyFile Implementation
 >```
 >import asyncio
 >from FastIO import CopyFile
@@ -49,7 +49,7 @@
 >asyncio.run(main())
 >```
 
->- FastIO.CopyDir(...): An Asynchronouse shutil.copytree Implementation
+>* FastIO.CopyDir(...): An Asynchronouse shutil.copytree Implementation
 >```
 >import asyncio
 >from FastIO import CopyDir
