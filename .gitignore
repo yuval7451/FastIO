@@ -6,6 +6,10 @@ __pycache__/
 tests
 tests/
 tests/*
+results
+results/
+results/*
+TODO.md
 # C extensions
 *.so
 
