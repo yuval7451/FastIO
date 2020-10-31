@@ -3,7 +3,7 @@
 
 ### What Is It?
 
->* *A Fully Asynchronouse shutil like API*
+>* *A Fully Asynchronouse & Non-Blcoking shutil like API*
 ---
 
 ### Getting Started
@@ -27,42 +27,25 @@
 >```
 
 ---
-### API
->- FastIO.walk(...): An AsyncGenerator os.walk like Implementation 
->```
->import asyncio
->from FastIO import walk
->async def main():
->    async for basedir, dirs, filenames in walk(r"C:\\"):
->        print(basedir, dirs, filenames)
->
->asyncio.run(main())
->```
-
->* FastIO.CopyFile(...): An Asynchronouse shutil.CopyFile Implementation
->```
->import asyncio
->from FastIO import CopyFile
->async def main():
->    await CopyFile(r"C:\Windows\System32\kernel32.dll", r"D:\backup\kernel32.dll.backup")  
->  
->asyncio.run(main())
->```
-
->* FastIO.CopyDir(...): An Asynchronouse shutil.copytree Implementation
->```
->import asyncio
->from FastIO import CopyDir
->async def main():
->    await CopyDir(r"C:\\", r"D:\backup\C") 
->   
->asyncio.run(main())
->```
+### Performance
+#### Disclaimer
+> * **These results Were Taken on a Samsung PM951 250GB NVMe ssd, Your Results may very depanding on the R/W Spead of your Drive**
+> * **CopyFiles Only Copy The Files were in The destination folder and does not recursively copy Files for sub-directoris**
+> * **CopyDir Copy's the enitre Directory structure and mirroes it to the Destination Folder and there for Takes longer**
 
 ---
-### CopyDir Performance
+* CopyFiles Performance
+
 | Number Of Files | Avg File Size | Total File Sizes | Total Time  |
 |-----------------|---------------|------------------|-------------|
-| 250             | 3.8MB         | 900 MB           | 10 Seconds  |
-| 500             | 1.5MB         | 750MB            | 12 Seconds  |
-| 1000            | 7.8MB         | 7.8GB            | 150 Seconds |
+| 120             | 8.3MB         | 1GB              |  3 Seconds  |
+| 430             | 7MB           | 3GB              | 10 Seconds  |
+| 650             | 7.6MB         | 5GB              | 30 Seconds  |
+
+* CopyDir Performance
+
+| Number Of Files | Avg File Size | Total File Sizes | Total Time  |
+|-----------------|---------------|------------------|-------------|
+| 120             | 8.3MB         | 1GB              | 15 Seconds  |
+| 430             | 7MB           | 3GB              | 50 Seconds  |
+| 650             | 7.6MB         | 5GB              | 90 Seconds  |

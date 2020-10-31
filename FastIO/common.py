@@ -9,7 +9,7 @@ Purpose
 ## Imports
 import logging
 
-DEBUG = True
+DEBUG = False
 PAGE_SIZE = 4096
 PYTHON_PAGE_COUNT = 64
 BUFFER_SIZE = PYTHON_PAGE_COUNT * PAGE_SIZE # Not scientific.
