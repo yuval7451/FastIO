@@ -9,4 +9,5 @@ async def main():
     await CopyDir(r"C:\Python27", r"D:\FastIO\Python27")
     end = time.time() - start
     Logger.info("it took {} Seconds".format(end))
+    
 asyncio.run(main())

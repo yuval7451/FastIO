@@ -1,7 +1,7 @@
-
+# Author: Yuval Kaneti
 
 import logging
-from common import LOGGING_FORMAT
+from .common import LOGGING_FORMAT
 
 def LoggingFactory(name: str, level: int) -> logging.Logger:
     Logger = logging.getLogger(name)

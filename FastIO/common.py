@@ -1,7 +1,5 @@
 # Auhor: Yuval Kaneti
 
-
-
 PAGE_SIZE = 4096
 PYTHON_PAGE_COUNT = 64
 BUFFER_SIZE = PYTHON_PAGE_COUNT * PAGE_SIZE # Not scientific.
