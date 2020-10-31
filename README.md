@@ -36,16 +36,17 @@
 ---
 * CopyFiles Performance
 
-| Number Of Files | Avg File Size | Total File Sizes | Total Time  |
-|-----------------|---------------|------------------|-------------|
-| 120             | 8.3MB         | 1GB              |  3 Seconds  |
-| 430             | 7MB           | 3GB              | 10 Seconds  |
-| 650             | 7.6MB         | 5GB              | 30 Seconds  |
+| Data Type | Number Of Files | Avg File Size | Total File Sizes | Total Time  |
+|-----------|-----------------|---------------|------------------|-------------|
+| Images    | 120             | 8.3MB         | 1GB              |  3 Seconds  |
+| Images    | 430             | 7MB           | 3GB              | 10 Seconds  |
+| Images    | 650             | 7.6MB         | 5GB              | 30 Seconds  |
 
 * CopyDir Performance
 
-| Number Of Files | Avg File Size | Total File Sizes | Total Time  |
-|-----------------|---------------|------------------|-------------|
-| 120             | 8.3MB         | 1GB              | 15 Seconds  |
-| 430             | 7MB           | 3GB              | 50 Seconds  |
-| 650             | 7.6MB         | 5GB              | 90 Seconds  |
+| Data Type | Number Of Files | Avg File Size | Total File Sizes | Total Time  |
+|-----------|-----------------|---------------|------------------|-------------|
+| Images    | 120             | 8.3MB         | 1GB              | 15 Seconds  |
+| Images    | 430             | 7MB           | 3GB              | 50 Seconds  |
+| Images    | 650             | 7.6MB         | 5GB              | 90 Seconds  |
+| Python27  | 15000           | 0.2KB         | 400MB            | 125 Seconds |
