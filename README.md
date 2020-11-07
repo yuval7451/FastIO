@@ -21,7 +21,7 @@
 >import asyncio
 >from FastIO import CopyDir
 >async def main():
->    await CopyDir(r"C:\\", r"D\\backup")
+>    await CopyDir(r"C:\\", r"D:\\backup")
 >
 >asyncio.run(main())
 >```
