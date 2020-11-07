@@ -179,7 +179,7 @@ async def CopyDir(src: str, dst: str, max_workers: int=MAX_WORKERS) -> None:
         await asyncio.gather(*dir_futures)
 
 async def _CopyDir(src: str, dst: str, semaphore: asyncio.Semaphore, pbar: tqdm.std.tqdm) -> None:
-    """_CopyDir A Non Blocking Asynchronouse Recursive Coroutine That Copy Files.
+    """_CopyDir: A Non Blocking Asynchronouse Recursive Coroutine That Copy Files.
 
     Parameters
     ----------
