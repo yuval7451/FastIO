@@ -10,11 +10,12 @@ Purpose
 
 ## Imports
 import logging
+
 from .common import LOGGING_FORMAT, LOGGING_LEVEL
 
 ## Functions
 def LoggingFactory(name: str, level: int=LOGGING_LEVEL) -> logging.Logger:
-    """LoggingFactory: A Logging asstince for FastIO.
+    """LoggingFactory: A Logging util for FastIO.
 
     Parameters
     ----------
@@ -37,4 +38,3 @@ def LoggingFactory(name: str, level: int=LOGGING_LEVEL) -> logging.Logger:
     StreamHandler.setFormatter(formatter)
     Logger.addHandler(StreamHandler)
     return Logger
-

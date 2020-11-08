@@ -9,12 +9,19 @@ Purpose
 """
 ## Imports
 import os
+import aiofiles
+import aiohttp
+
 from contextlib import suppress
-from typing import AsyncGenerator, Iterator, List, Tuple
+
+from typing import AsyncGenerator, Iterator, List, Tuple, Union
 
 from FastIO import Logger
+from FastIO.decorators import async_performance
+from FastIO.common import BUFFER_SIZE, HTTP_GET, HTTP_METHODS, READING_MODES, DEBUG, READ_BYTES
 
 ## Functions
+@async_performance
 async def walk(top: str) -> AsyncGenerator[Tuple[str, List[str], List[str]], None]:
     """walk: AsyncGenerator Implementation of os.walk & os.scandir.
 
@@ -65,3 +72,50 @@ async def walk(top: str) -> AsyncGenerator[Tuple[str, List[str], List[str]], Non
                 async for (_top, _dirs, _filenames) in walk(top=new_top):
                     yield _top, _dirs, _filenames
 
+async def read(file_name: str, mode: str=READ_BYTES, **kwargs) -> Union[bytes, str]:
+    """read: A Wraper for aiofiles.open(...)
+
+    Parameters
+    ----------
+    file_name : str
+        The file name.
+
+    mode : str
+        The reading mode. 
+
+    Awaits
+    ------
+    - Coroutine[AsyncBufferedReader.read()].
+
+    Returns
+    -------
+    Union[bytes, str]
+        The file Content in String | Bytes Depnding on the Reading mode
+    """    
+    assert mode in READING_MODES, 'Invalid mode: {} for Reading, VALID Modes are: {}'.format(mode, READING_MODES)
+    buffer = b'' if mode=='rb' else ''
+    with suppress(PermissionError, IOError):
+        async with aiofiles.open(file=file_name, mode=mode) as fd:
+            while True:
+                chunk = await fd.read(BUFFER_SIZE) # type: ignore
+                buffer += chunk
+                if not chunk:
+                    break
+    return buffer
+    
+async def http_request(url: str, method: str=HTTP_GET, **kwargs):
+    assert method in HTTP_METHODS, 'Invalid method: {} for HTTP Request, VALID Nethods are: {}'.format(method, HTTP_METHODS)
+    async with aiohttp.request(method=method, url=url) as response:
+        return await response.text()
+
+def blocking_read(file_name: str, mode: str=READ_BYTES, **kwargs):
+    assert mode in READING_MODES, 'Invalid mode: {} for Reading, VALID Modes are: {}'.format(mode, READING_MODES)
+    buffer = b'' if mode=='rb' else ''
+    with suppress(PermissionError, IOError):
+        with open(file_name, mode) as fd:
+            while True:
+                chunk = fd.read(BUFFER_SIZE)
+                buffer += chunk
+                if not chunk:
+                    break
+    return buffer

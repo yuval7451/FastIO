@@ -19,10 +19,13 @@ from asyncio.events import AbstractEventLoop
 
 from FastIO.common import MAX_WORKERS
 from FastIO.miscellaneous import walk
+from FastIO.decorators import async_performance
 from FastIO.files import CopyFile, _CopyFile
 from FastIO import Logger
 
 ## Functions
+
+@async_performance
 async def CopyDirExecutor(src: str, dst: str, max_workers: int=MAX_WORKERS, loop: AbstractEventLoop=None) -> None:    
     """CopyDirExecutor: An Asynchronouse Executor Implementation for shutil.copydir.
 
@@ -117,6 +120,7 @@ def _CopyFileExecutor(src_file: str, dst_file: str, pbar: tqdm.std.tqdm) -> None
         pbar.update(1)
         loop.close()
 
+@async_performance
 async def CopyDir(src: str, dst: str, max_workers: int=MAX_WORKERS) -> None:
     """CopyDir: A Faster Asynchronouse shutil.copydir Implementation.
 

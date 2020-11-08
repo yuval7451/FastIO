@@ -10,20 +10,21 @@ Purpose
 ## Imports
 import os
 import tqdm
-from contextlib import suppress
-
 import asyncio
 import aiofiles
 
-from aiofiles.threadpool.binary import AsyncBufferedReader, AsyncBufferedIOBase
 from asyncio import Semaphore
+from contextlib import suppress
+from aiofiles.threadpool.binary import AsyncBufferedReader, AsyncBufferedIOBase
 
 from FastIO import Logger
+from FastIO.decorators import async_performance
 from FastIO.common import MAX_WORKERS, READ_BYTES, WRITE_BYTES, BUFFER_SIZE
 
 ## Functions
+@async_performance
 async def CopyFiles(src: str, dst: str, max_workers: int=MAX_WORKERS) -> None:
-    """CopyFiles A Faster shutil.CopyFiles Implementation.
+    """CopyFiles: A Faster shutil.CopyFiles Implementation.
 
     Parameters
     ----------
@@ -75,8 +76,9 @@ async def CopyFiles(src: str, dst: str, max_workers: int=MAX_WORKERS) -> None:
 
         await asyncio.gather(*futures)
 
+@async_performance
 async def CopyFile(src_file: str, dst_file: str) -> None:
-    """CopyFile Asynchronouse shutil.copy Implementation.
+    """CopyFile: Asynchronouse shutil.copy Implementation.
 
     Parameters
     ----------
@@ -103,9 +105,9 @@ async def CopyFile(src_file: str, dst_file: str) -> None:
     async with aiofiles.open(src_file, mode=READ_BYTES) as src_fd:
         async with aiofiles.open(dst_file, mode=WRITE_BYTES) as dst_fd:
             await _CopyFileObj(src_fd=src_fd, dst_fd=dst_fd)
-                        
+
 async def _CopyFile(src_file: str, dst_file: str, semaphore: asyncio.Semaphore, pbar: tqdm.std.tqdm=None) -> None:
-    """_CopyFile Asynchronouse shutil.copy Implementation.
+    """_CopyFile: Asynchronouse shutil.copy Implementation.
 
     Parameters
     ----------
@@ -139,7 +141,7 @@ async def _CopyFile(src_file: str, dst_file: str, semaphore: asyncio.Semaphore, 
                     pbar.update(1)
 
 async def _CopyFileObj(src_fd: AsyncBufferedReader, dst_fd: AsyncBufferedIOBase) -> None:
-    """_CopyFileObj Copy Data from File Descriptor to Another.
+    """_CopyFileObj: Copy Data from File Descriptor to Another.
 
     Parameters
     ----------
